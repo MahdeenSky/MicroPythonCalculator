@@ -6,7 +6,7 @@ print("ax^2+bx+c=0")
 def stopper():
     stop_flag = False
     stop_or_continue = ""
-    while stop_or_continue != "a" or "b":
+    while stop_or_continue != "a" or stop_or_continue != "b":
         stop_or_continue = input("Stop?: ")
         if stop_or_continue == "a":
             stop_flag = True
