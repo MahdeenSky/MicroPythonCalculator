@@ -22,6 +22,7 @@ Example:
 
 The Program is not designed to be foolproof so please give it the values it requires.
 
-Completing the square - under progress
+Now supports complete the square, but prone to errors
+if you have any fix for my code find me on reddit @MahdeenSky
 
 
