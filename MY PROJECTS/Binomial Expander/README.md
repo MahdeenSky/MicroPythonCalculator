@@ -12,7 +12,6 @@ Allows you to
 
 Support for micropython!
 
-Choose a for Pas_Tri entry(C)\nChoose b for term coefficient finder\nChoose c for first nth terms\nChoose d for c but with coef
 Use:
 
 When you run the program, it'll ask you to enter
