@@ -1,40 +1,33 @@
 print("Factorial Calculator: ")
 term = []
 
-# loops through the terms to print them
-def term_list_looper(num):
-    for i in range(num):
-        print(term[i])
 
 # finds the factorial of a certain number (!)
-def factorial(num):
-    result = 1
+def factorial(num, end_point=1):
+    # eval() evaluates an expression like "5/7" incase input is a fraction
     if type(num) == str:
         num = int(eval(num))
     else:
         pass
 
-    for i in range(1, num+1):
+    result = 1
+    for i in range(end_point, num+1):
         result *= i
     return result
 
 # find the combination of a nth and r  (nCr)
 def combination(nth, rth):
-    coefficient = (factorial(nth) / (factorial(rth) * factorial(nth - rth)))
+    coefficient = factorial(nth, nth-rth+1) // factorial(rth)
     return coefficient
 
 # finds a certain entry of the pascal's triangle using rows and columns 
 def pascal_triangle_c_entry(nth, rth):
-    coefficient = (factorial(nth-1)/(factorial(rth-1)*factorial((nth-1)-(rth-1))))
-    return int(coefficient)
+    return int(combination(nth-1, rth-1))
 
 # finds the working and and coefficent of a term in (a+bx)^n
 def binomial_term_coefficient_finder(nth, rth, a, b_coefficient, output):
     diff_nth_rth = nth - rth
-    comb = combination(nth, rth)
-    a_result = a**diff_nth_rth
-    b_result = b_coefficient**rth
-    resultant_coefficient = comb * a_result * b_result
+    resultant_coefficient = combination(nth, rth) * (a**diff_nth_rth) * (b_coefficient**rth)
     group = str("("+str(nth)+"C"+str(rth)+") ("+str(a)+")^"+str(diff_nth_rth)+" ("+str(b_coefficient)+"x)^"+str(rth))
     if output == 0:
         return group
@@ -50,40 +43,32 @@ def binomial_term_coefficient_finder(nth, rth, a, b_coefficient, output):
 
 # finds the unsimplified form of (a + bx)^n
 def first_count_terms(nth, count, a, b_coefficient):
-    for r in range(count):
-        term.insert(r, binomial_term_coefficient_finder(nth, r, a, b_coefficient, 0))
+    term = [binomial_term_coefficient_finder(nth, rth, a, b_coefficient, 0) for rth in range(count)]
     print(str(count)+" Terms are:")
-    term_list_looper(count)
+    for i in range(count):
+        print(term[i])
+    
 
 # finds all the coeffients from when x is to the power 0 to n
 def first_terms_with_coefficients(nth, count, a, b_coefficient):
-    terms = []
     terms = [binomial_term_coefficient_finder(nth, rth, a, b_coefficient, 2) for rth in range(count)]
     print(terms)
 
-# as this code is for a calculator the a and b buttons are right beside each other, so after you find your desired result
-# you enter a to stop and b to continue
+# as this code is for a calculator the a is very close to your finger so after you find your desired result
+# you enter a to stop and anything else will restart it
 def stopper():
-    stop_flag = False
-    stop_or_continue = ""
-    while stop_or_continue != "a" or "b":
-        stop_or_continue = input("Stop?: ")
-        if stop_or_continue == "a":
-            stop_flag = True
-            break
-        if stop_or_continue == "b":
-            stop_flag = False
-            break
-    if stop_flag:
-        raise SystemExit
+    stop_or_continue = input("Stop?: ")
+    if stop_or_continue == "a":
+        raise SystemExit    
 
 while True:
-    print("Choose a for Pas_Tri entry(C)\nChoose b for term coefficient finder\nChoose c for first nth terms\nChoose d for c but with coeff")
-    choice = input(">> ")
-    while choice != "a" or choice != "b" or choice != "c" or choice != "d":
+    choice = 'x'
+    while choice in ['a', 'b', 'c', 'd', 'x']:
+        print("Choose a for Pas_Tri entry(C)\nChoose b for term coefficient finder\nChoose c for first nth terms\nChoose d for c but with coeff")
+        choice = input(">> ")
         if choice == "a":
-            nth = int(input("Enter nth: "))
-            rth = int(input("Enter rth: "))
+            nth = int(input("Enter row number(n): "))
+            rth = int(input("Enter entry number(r): "))
             print(pascal_triangle_c_entry(nth, rth))
 
         elif choice == "b":
@@ -112,8 +97,10 @@ while True:
             if type(b_coefficient) == str:
                 b_coefficient = eval(b_coefficient)
             first_terms_with_coefficients(nth, count, a, b_coefficient)
+        
+        else:
+            print("unknown letter\n please try again!")
              
         stopper()
-        print("Choose a for Pas_Tri entry(C)\nChoose b for term coefficient finder\nChoose c for first nth terms\nChoose d for c but with coeff")
-        choice = input(">> ")
+        choice = 'x'
    
