@@ -1,6 +1,4 @@
 print("Factorial Calculator: ")
-term = []
-
 
 # finds the factorial of a certain number (!)
 def factorial(num, end_point=1):
