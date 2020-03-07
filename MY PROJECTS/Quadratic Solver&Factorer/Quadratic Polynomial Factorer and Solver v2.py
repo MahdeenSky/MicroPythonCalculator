@@ -2,21 +2,13 @@ from math import sqrt, pi
 
 print("ax^2+bx+c=0")
 
+def input_pi_replacer(prompt):
+    return float(eval(input(prompt).replace("pi", str(pi))))
 
 def stopper():
-    stop_flag = False
-    stop_or_continue = ""
-    while stop_or_continue != "a" or stop_or_continue != "b":
-        stop_or_continue = input("Stop?: ")
-        if stop_or_continue == "a":
-            stop_flag = True
-            break
-        if stop_or_continue == "b":
-            stop_flag = False
-            break
-    if stop_flag:
-        raise SystemExit
-
+    stop_or_continue = input("Stop?: ")
+    if stop_or_continue == "x":
+        raise SystemExit  
 
 
 def polynomial_checker(a, b, c):
@@ -240,9 +232,9 @@ while True:
         if stop_flag is True:
             break
 
-        a = float(eval(input("insert a: ").replace("pi", str(pi))))
-        b = float(eval(input("insert b: ").replace("pi", str(pi))))
-        c = float(eval(input("insert c: ").replace("pi", str(pi))))
+        a = input_pi_replacer("insert a: ")
+        b = input_pi_replacer("insert b: ")
+        c = input_pi_replacer("insert c: ")
 
         complete_square = quadratic_function(a, b, c, True)
         if complete_square:
