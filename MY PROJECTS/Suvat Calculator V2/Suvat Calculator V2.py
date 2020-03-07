@@ -4,8 +4,19 @@
 # v^2 = u^2 + 2a*s
 # s = ut + 0.5at^2
 from math import sqrt, pi
+
+# replaces "pi" with the symbol of pi if inputted from a calculator
+def input_pi_replacer(prompt):
+    return input(prompt).replace("pi", str(pi))
+
+
+def stopper():
+    stop_or_continue = input("Stop?: ")
+    if stop_or_continue == "x":
+        raise SystemExit  
+
 print("Suvat Calculator:")
-print("if variable not\ngiven then type\n'a'\n")
+print("if variable not\ngiven then type\n'x'\n")
 
 
 def suvatsolver():
@@ -15,7 +26,7 @@ def suvatsolver():
         variable_count = 0
         [s_known, u_known, v_known, a_known, t_known] = [False, False, False, False, False]
 
-        distance = input("Distance in metres\n:  ").replace("pi", str(pi))
+        distance = input_pi_replacer("Distance in metres\n:  ")
         # this assumes that the input is actually acceleration number.
         # then it says the variable is known and adds 1 to the variable count.
         if distance != "x":
@@ -23,13 +34,13 @@ def suvatsolver():
             distance = float(eval(distance))
             variable_count += 1
 
-        initial_velocity = input("Initial velocity\nin metres/second\n: ").replace("pi", str(pi))
+        initial_velocity = input_pi_replacer("Initial velocity\nin metres/second\n: ")
         if initial_velocity != "x":
             u_known = True
             initial_velocity = float(eval(initial_velocity))
             variable_count += 1
 
-        final_velocity = input("Final velocity\n in metres/second\n: ").replace("pi", str(pi))
+        final_velocity = input_pi_replacer("Final velocity\n in metres/second\n: ")
         if final_velocity != "x":
             v_known = True
             final_velocity = float(eval(final_velocity))
@@ -37,7 +48,7 @@ def suvatsolver():
         else:
             pass
 
-        acceleration = input("Acceleration\n in metres/second squared\n: ").replace("pi", str(pi))
+        acceleration = input_pi_replacer("Acceleration\n in metres/second squared\n: ")
         if acceleration != "x":
             a_known = True
             acceleration = float(eval(acceleration))
@@ -45,7 +56,7 @@ def suvatsolver():
         else:
             pass
 
-        time = input("Time\nin seconds\n: ").replace("pi", str(pi))
+        time = input_pi_replacer("Time\nin seconds\n: ")
         if time != "x":
             t_known = True
             time = float(eval(time))
@@ -131,31 +142,10 @@ def suvatsolver():
             print("")
             print("Initial velocity =\n", initial_velocity)
             print("Distance =\n", distance)
-        a = distance
-        b = initial_velocity
-        c = final_velocity
-        d = acceleration
-        e = time
 
         print("")
         break
 
-
 while True:
     suvatsolver()
-
-    stop_flag = 0
-    while True:
-        stop_or_continue = input("Stop?\na=yes,b=no : ")
-        if stop_or_continue == "a":
-            stop_flag = 1
-            break
-        if stop_or_continue == "b":
-            stop_flag = 0
-            break
-
-    if stop_flag == 1:
-        break
-    else:
-        pass
-
+    stopper()
