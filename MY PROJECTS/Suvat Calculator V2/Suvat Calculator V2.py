@@ -11,7 +11,7 @@ def input_pi_replacer(prompt):
 
 
 def stopper():
-    stop_or_continue = input("Stop?: ")
+    stop_or_continue = input("Stop?: then enter 'x'")
     if stop_or_continue == "x":
         raise SystemExit  
 
@@ -45,24 +45,18 @@ def suvatsolver():
             v_known = True
             final_velocity = float(eval(final_velocity))
             variable_count += 1
-        else:
-            pass
 
         acceleration = input_pi_replacer("Acceleration\n in metres/second squared\n: ")
         if acceleration != "x":
             a_known = True
             acceleration = float(eval(acceleration))
             variable_count += 1
-        else:
-            pass
 
         time = input_pi_replacer("Time\nin seconds\n: ")
         if time != "x":
             t_known = True
             time = float(eval(time))
             variable_count += 1
-        else:
-            pass
 
         if variable_count < 3:
             print("not enough variables")
