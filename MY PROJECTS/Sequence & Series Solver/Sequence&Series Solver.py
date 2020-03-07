@@ -42,19 +42,9 @@ def input_checker(choice_main, choice_sub, L):
 # as this code is for a calculator the a and b buttons are right beside each other, so after you find your desired result
 # you enter a to stop and b to continue 
 def stopper():
-    stop_flag = False
-    stop_or_continue = ""
-    while stop_or_continue != "a" or "b":
-        stop_or_continue = input("Stop?: ")
-        if stop_or_continue == "a":
-            stop_flag = True
-            break
-        if stop_or_continue == "b":
-            stop_flag = False
-            break
-    if stop_flag:
-        raise SystemExit
-
+    stop_or_continue = input("Stop?: ")
+    if stop_or_continue == "x":
+        raise SystemExit  
 
 print("Sequence & Series Solver")
 
