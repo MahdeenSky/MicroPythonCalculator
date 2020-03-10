@@ -4,6 +4,10 @@ Based on an input of radius, and angle (in degrees or radians)
 you'll get
 1) Area of Sector
 2) Area of Inner Triangle 
+3) Arc Length
+4) Chord Area
+5) Chord Length
+6) Sector Perimeter
 
 
 
