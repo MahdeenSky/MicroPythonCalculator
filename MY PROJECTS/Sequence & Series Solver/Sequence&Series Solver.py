@@ -64,6 +64,8 @@ def input_checker(choice_main, choice_sub, L):
             count_list = [float(eval(count)) for count in count_list if isinstance(count, str)]
             return count_list
 
+# checks if L is an x or not, also based on whether its on the exceed or normal path, and
+# an x means L is not present, while a value of L represents it is present and used in calculation
 def L_evaluator(L, option, choice_n, value):
     if option == "normal":
         if L == "x":
@@ -99,6 +101,7 @@ def L_evaluator(L, option, choice_n, value):
                     return n
 
 
+# finds the first n to exceed a certain value, by using brute force method
 def minimum_n_finder(choice_main, choice_map_exceed):
     choice_n_input = None
     if choice_main == "arithmetic":
@@ -128,9 +131,7 @@ def minimum_n_finder(choice_main, choice_map_exceed):
             print("The minimum n to exceed is " + str(result))
 
 
-
     elif choice_main == 'geometric':
-
         while choice_n_input not in ['a', 'b']:
             choice_n_input = input("Enter a for nth\nEnter b for sum_to_nth\n>> ")
         choice_n = choice_map_exceed[choice_n_input]
@@ -166,8 +167,7 @@ def minimum_n_finder(choice_main, choice_map_exceed):
             print("The minimum n to exceed is " + str(n))
 
 
-# as this code is for a calculator the a and b buttons are right beside each other, so after you find your desired result
-# you enter a to stop and b to continue 
+# as this code is for a calculator the x button is very easily accessible to shut the whole program.
 def stopper():
     stop_or_continue = input("Stop?: enter x then\n>>>  ")
     if stop_or_continue == "x":
