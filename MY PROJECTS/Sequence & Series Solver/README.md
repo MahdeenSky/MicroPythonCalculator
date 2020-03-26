@@ -6,19 +6,26 @@ and import fractions into micropython
 
 Support for micropython!
 
-	Arithmetic:
+Arithmetic:
+
 1) An = a1 + (n-1)d
+
 2) Sn = n/2 x (2a1 + (n-1)d)
 
-	Geometric:
+Geometric:
+
 3) An = a1(r)^(n-1)
+
 4) Sn = (a(1-(r)^n)/(1-r)
+
 5) S_infinity = a/(1-r)
 
-	Updates:
+Updates:
+
 6) ability to find the first nth to exceed a value
 
-	Coming soon:
+Coming soon:
+
 Recursive Sequences/Series
 
 Use:
