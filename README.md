@@ -1,2 +1,2 @@
 # MicroPythonCalculator
-micropython programs to solve math for my fxcg50 casio calculator
+micropython programs to solve math for my fx-cg50 casio calculator
