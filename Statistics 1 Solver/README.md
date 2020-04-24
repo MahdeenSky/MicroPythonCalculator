@@ -34,3 +34,8 @@ Gives a wide range of output, which include:
 9) interquartile range
 10) Variance
 11) Standard Deviation 
+12) Range
+13) lower outlier (based on 1.5 x standard deviation)
+14) upper outlier (based on 1.5 x standard deviation)
+15) measure of skewness
+16) skewness (positive, negative, symmetrical)

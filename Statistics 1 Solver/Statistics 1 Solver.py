@@ -39,9 +39,19 @@ def listed_data_stats(listed_data): # for dealing with listed data Ex: 1,2,3,4 o
     variance = (sum_squared_listed_data / number_of_data) - mean**2
     standard_deviation = round(math.sqrt(variance), 5)
 
-    # median
+    # data sorted for finding measure of locations
     sorted_listed_data = listed_data[:] 
     sorted_listed_data.sort()
+
+    # lower quartile
+    if number_of_data % 2 == 0:
+        LQ1 = sorted_listed_data[number_of_data//4] 
+        LQ2 = sorted_listed_data[number_of_data//4 - 1] 
+        lower_quartile = round((LQ1 + LQ2)/2, 5)
+    else:
+        lower_quartile = round(sorted_listed_data[number_of_data//4], 5)
+
+    # median
     if number_of_data % 2 == 0:
         median1 = sorted_listed_data[number_of_data//2] 
         median2 = sorted_listed_data[number_of_data//2 - 1] 
@@ -49,14 +59,39 @@ def listed_data_stats(listed_data): # for dealing with listed data Ex: 1,2,3,4 o
     else:
         median = round(sorted_listed_data[number_of_data//2], 5)
 
+    # upper quartile
+    if number_of_data % 2 == 0:
+        UQ1 = sorted_listed_data[round(number_of_data//(4/3))] 
+        UQ2 = sorted_listed_data[round(number_of_data//(4/3)) - 1] 
+        upper_quartile = round((UQ1 + UQ2)/2, 5)
+    else:
+        upper_quartile = round(sorted_listed_data[round(number_of_data//(4/3))], 5)
+
+    # Interquartile Range
+    IQR = upper_quartile - lower_quartile
+    Range = sorted_listed_data[-1] - sorted_listed_data[0]
+
+    # Outliers
+    lower_outlier_bound = lower_quartile - (1.5*standard_deviation)
+    upper_outlier_bound = upper_quartile + (1.5*standard_deviation)
+
+    # Skewness
+    skewness_quantity = (3*(mean-median))/standard_deviation
+    if skewness_quantity > 0:
+        skewness = "positive"
+    elif skewness_quantity < 0:
+        skewness = "negative"
+    else:
+        skewness = "symmetrical"
+
     # mode
     m = max(listed_data.count(value) for value in listed_data)
     mode = set(str(x) for x in listed_data if listed_data.count(x) == m) if m>1 else None
 
-    return [sum_listed_data, sum_squared_listed_data, number_of_data, mean, median, mode, round(variance, 5), round(standard_deviation, 5)]
+    return [sum_listed_data, sum_squared_listed_data, number_of_data, round(mean, 5), median, mode, round(variance, 5), round(standard_deviation, 5), lower_quartile, upper_quartile, IQR, Range, lower_outlier_bound, upper_outlier_bound, skewness, skewness_quantity]
 
 
-def grouped_data_stats(grouped_data): # for dealing with grouped data ex: [[lower bound, upper bound, frequency], [...], [...]] etc. in [[0, 10, 16], [10, 15, 18], [15, 20, 50]] in the first list, 0 and 10 represents the interval 0 -> 10, and 16 is the frequency of numbers in this range
+def continuous_grouped_data_stats(grouped_data): # for dealing with grouped data ex: [[lower bound, upper bound, frequency], [...], [...]] etc. in [[0, 10, 16], [10, 15, 18], [15, 20, 50]] in the first list, 0 and 10 represents the interval 0 -> 10, and 16 is the frequency of numbers in this range
     midpoints = []
     cumulative_frequencies = []
     sum_x = 0
@@ -69,15 +104,17 @@ def grouped_data_stats(grouped_data): # for dealing with grouped data ex: [[lowe
                 data[0] -= gap
             data[1] += gap
 
-    for index, data in enumerate(grouped_data):
+    count = 0
+    for data in grouped_data:
         midpoints.append((data[0] + data[1])/2) # acquires a list of midpoints for the each interval/tuple
         number_of_data += data[2] # acquires the number of data/ total frequency of all intervals
-        sum_x += (midpoints[index] * data[2]) # gets the sum of all midpoints x frequency
-        sum_x_squared += (midpoints[index]**2 * data[2]) # gets the sum of all midpoints^2 x frequency
-        if index == 0: # if it is the first loop, then add the first value of cumulative frequency to the list
+        sum_x += (midpoints[count] * data[2]) # gets the sum of all midpoints x frequency
+        sum_x_squared += (midpoints[count]**2 * data[2]) # gets the sum of all midpoints^2 x frequency
+        if count == 0: # if it is the first loop, then add the first value of cumulative frequency to the list
             cumulative_frequencies.append(data[2]) 
         else: # if it is not, then get the value of the previous cumulative frequency and add to it the frequency of the current data, and append it
-            cumulative_frequencies.append(cumulative_frequencies[index-1] + data[2])
+            cumulative_frequencies.append(cumulative_frequencies[count-1] + data[2])
+        count += 1
 
     # mean
     mean = sum_x / number_of_data 
@@ -86,17 +123,30 @@ def grouped_data_stats(grouped_data): # for dealing with grouped data ex: [[lowe
     variance = (sum_x_squared / number_of_data) - mean**2
     standard_deviation = math.sqrt(variance)
 
-    # lower quartile, median, and upper quartile, and interquartile range
+    # lower quartile, median, and upper quartile, interquartile range, Range, and outlier
     lower_quartile = interpolation_grouped_data(grouped_data, cumulative_frequencies, (25/100) * number_of_data) # performs interpolation to acquire it
     median = interpolation_grouped_data(grouped_data, cumulative_frequencies, (50/100) * number_of_data)
     upper_quartile = interpolation_grouped_data(grouped_data, cumulative_frequencies, (75/100) * number_of_data)
     interquartile_range = upper_quartile - lower_quartile
+    Range = grouped_data[-1][1] - grouped_data[0][0]
+    lower_outlier_bound = lower_quartile - (1.5*standard_deviation)
+    upper_outlier_bound = upper_quartile + (1.5*standard_deviation)
+    
+    # Skewness
+    skewness_quantity = (3*(mean-median))/standard_deviation
+    if skewness_quantity > 0:
+        skewness = "positive"
+    elif skewness_quantity < 0:
+        skewness = "negative"
+    else:
+        skewness = "symmetrical"
+    
 
-    return [sum_x, sum_x_squared, number_of_data, mean, variance, standard_deviation, lower_quartile, median, upper_quartile, interquartile_range]
+    return [sum_x, sum_x_squared, number_of_data, round(mean, 5), round(variance, 5), round(standard_deviation, 5), lower_quartile, median, upper_quartile, interquartile_range, skewness, round(skewness_quantity, 5), round(lower_outlier_bound, 5), round(upper_outlier_bound, 5), Range]
     
         
 def statistics(): # checks for what you want
-    choice = input("a for\nInterpolation\nb for\nListed Data\nc for Grouped Data\n: ")
+    choice = input("a for\nInterpolation\nb for\nListed Data\nc for continuous Data\n: ")
 
     if choice == "a": # interpolation
         mn_cu_freq = mid_cu_freq = mx_cu_freq = lower_bound = upper_bound = None
@@ -112,13 +162,15 @@ def statistics(): # checks for what you want
             value = input("Enter Values: ")
             if value == "x": # enter x when no more data available
                 break
-            value = int(value)
+            value = float(value)
             listed_data.append(value)
         results = [str(value) for value in listed_data_stats(listed_data)]
-        print("", "Sum_x = " + results[0], "Sum_x^2 = " + results[1], "n = " + results[2], "Mean = " + results[3], "Median = " + results[4],
-        "Mode = " + results[5], "Variance = " + results[6], "Standard_Deviation = " + results[7], sep="\n")
+        print("", "Sum_x = " + results[0], "Sum_x^2 = " + results[1], "n = " + results[2], "Mean = " + results[3], "Mode = " + results[5],
+        "Lower Quartile = " + results[8], "Median = " + results[4], "Upper Quartile = " + results[9], "IQR = " + results[10],
+         "Range = " + results[11], "Variance = " + results[6], "Standard_Deviation = " + results[7], "lower outlier = " + results[12],
+         "upper outlier = " + results[13], "skewness is " + results[14], "skewness count = " + results[15], sep="\n")
 
-    elif choice == "c": # grouped data statistics
+    elif choice == "c": # continuous grouped data statistics
         grouped_data, results = [], []
         while True:
             start_boundary = input("Start Bound: ")
@@ -126,11 +178,13 @@ def statistics(): # checks for what you want
                 break
             end_boundary = input("End Bound: ")
             frequency = input("Frequency: ")
-            grouped_data.append([int(start_boundary), int(end_boundary), int(frequency)]) # each row in the grouped data is a list
-        results = [str(round(value, 5)) for value in grouped_data_stats(grouped_data)]
+            grouped_data.append([float(start_boundary), float(end_boundary), float(frequency)]) # each row in the grouped data is a list
+        results = [str(value) for value in continuous_grouped_data_stats(grouped_data)]
         print("", "Sum_x = " + results[0], "Sum_x^2 = " + results[1], "n = " + results[2], "Mean = " + results[3], "Variance = " + results[4],
-        "Standard Deviation = " + results[5], "Lower Quartile = " + results[6], "Median = " + results[7], "Upper Quartile = " + results[8],
-         "IQR = " + results[9], sep="\n")
+        "Standard Dev. = " + results[5], "Lower Quartile = " + results[6], "Median = " + results[7], "Upper Quartile = " + results[8],
+         "IQR = " + results[9], "Range = " + results[14], "skewness is " + results[10], "skewness count = " + results[11], 
+         "lower outlier = " + results[12], "upper outlier = " + results[13], sep="\n")
 
-
+    #elif choice == "d": # discrete grouped data statistics 
+        
 statistics()
