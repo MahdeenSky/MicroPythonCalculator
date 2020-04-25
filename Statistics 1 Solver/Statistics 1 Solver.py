@@ -163,7 +163,7 @@ def statistics(): # checks for what you want
                 break
             value = float(value)
             listed_data.append(value)
-        results = [str(value) for value in listed_data_stats(listed_data)]
+        results = [str(value) for value in listed_data_stats(listed_data)] # for concatonation
         print("", "Sum_x = " + results[0], "Sum_x^2 = " + results[1], "n = " + results[2], "Mean = " + results[3], "Mode = " + results[5],
         "Lower Quartile = " + results[8], "Median = " + results[4], "Upper Quartile = " + results[9], "IQR = " + results[10],
          "Range = " + results[11], "Variance = " + results[6], "Standard_Deviation = " + results[7], "Lower outlier = " + results[12],
