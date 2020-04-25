@@ -141,12 +141,11 @@ def continuous_grouped_data_stats(grouped_data): # for dealing with grouped data
     else:
         skewness = "symmetrical"
     
-
-    return [sum_x, sum_x_squared, number_of_data, round(mean, 5), round(variance, 5), round(standard_deviation, 5), lower_quartile, median, upper_quartile, interquartile_range, skewness, round(skewness_quantity, 5), round(lower_outlier_bound, 5), round(upper_outlier_bound, 5), Range]
+    return [sum_x, sum_x_squared, number_of_data, round(mean, 5), round(variance, 5), round(standard_deviation, 5), lower_quartile, median, upper_quartile, interquartile_range, skewness, round(skewness_quantity, 5), round(lower_outlier_bound, 5), round(upper_outlier_bound, 5), Range, midpoints]
     
         
 def statistics(): # checks for what you want
-    choice = input("a for\nInterpolation\nb for\nListed Data\nc for continuous Data\n: ")
+    choice = input("a for\nInterpolation\nb for\nListed Data\nc for Continuous Data\nd for Discrete Data\ne for Histogram\n: ")
 
     if choice == "a": # interpolation
         mn_cu_freq = mid_cu_freq = mx_cu_freq = lower_bound = upper_bound = None
@@ -167,8 +166,8 @@ def statistics(): # checks for what you want
         results = [str(value) for value in listed_data_stats(listed_data)]
         print("", "Sum_x = " + results[0], "Sum_x^2 = " + results[1], "n = " + results[2], "Mean = " + results[3], "Mode = " + results[5],
         "Lower Quartile = " + results[8], "Median = " + results[4], "Upper Quartile = " + results[9], "IQR = " + results[10],
-         "Range = " + results[11], "Variance = " + results[6], "Standard_Deviation = " + results[7], "lower outlier = " + results[12],
-         "upper outlier = " + results[13], "skewness is " + results[14], "skewness count = " + results[15], sep="\n")
+         "Range = " + results[11], "Variance = " + results[6], "Standard_Deviation = " + results[7], "Lower outlier = " + results[12],
+         "Upper outlier = " + results[13], "Skewness is " + results[14], "Skewness count = " + results[15], sep="\n")
 
     elif choice == "c": # continuous grouped data statistics
         grouped_data, results = [], []
@@ -180,11 +179,28 @@ def statistics(): # checks for what you want
             frequency = input("Frequency: ")
             grouped_data.append([float(start_boundary), float(end_boundary), float(frequency)]) # each row in the grouped data is a list
         results = [str(value) for value in continuous_grouped_data_stats(grouped_data)]
-        print("", "Sum_x = " + results[0], "Sum_x^2 = " + results[1], "n = " + results[2], "Mean = " + results[3], "Variance = " + results[4],
+        print("", "Sum_x = " + results[0], "Sum_x^2 = " + results[1], "Midpoints are " + results[15], "n = " + results[2], "Mean = " + results[3], "Variance = " + results[4],
         "Standard Dev. = " + results[5], "Lower Quartile = " + results[6], "Median = " + results[7], "Upper Quartile = " + results[8],
-         "IQR = " + results[9], "Range = " + results[14], "skewness is " + results[10], "skewness count = " + results[11], 
-         "lower outlier = " + results[12], "upper outlier = " + results[13], sep="\n")
+         "IQR = " + results[9], "Range = " + results[14], "Skewness is " + results[10], "Skewness count = " + results[11], 
+         "Lower outlier = " + results[12], "Upper outlier = " + results[13], sep="\n")
 
     #elif choice == "d": # discrete grouped data statistics 
+
+    elif choice == "e": # height and width calculator of histogram
+        Frequency_1 = float(input("Freq. 1 : "))
+        Class_Width_1 = float(input("ClassWidth 1 : "))
+        Frequency_2 = float(input("Freq. 2 : "))
+        Class_Width_2 = float(input("ClassWidth 2 : "))
+        Height_1 = float(input("Height 1 : "))
+        Width_1 = float(input("Width 1 : "))
+
+        Freq_Dens_1 = Frequency_1/Class_Width_1
+        Freq_Dens_2 = Frequency_2/Class_Width_2
+        Width_2 = (Class_Width_2*Width_1)/Class_Width_1
+        Height_2 = (Freq_Dens_2*Height_1)/Freq_Dens_1
+        print("Other Width = " + str(Width_2), "Other Height = " + str(Height_2), sep="\n")
+
+        
+
         
 statistics()
