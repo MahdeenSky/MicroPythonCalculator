@@ -216,14 +216,14 @@ def discrete_grouped_data_stats(grouped_data):
 
 
 def statistics(): # checks for what you want
-    choice = input("a for\nInterpolation\nb for\nListed Data\nc for Continuous Data\nd for Discrete Data\ne for Histogram\n: ")
+    choice = input("a for Interpolation\nb for Listed Data\nc for Continuous Data\nd for Discrete Data\ne for Histogram\n: ")
 
 
     if choice == "a": # interpolation
         mn_cu_freq = mid_cu_freq = mx_cu_freq = lower_bound = upper_bound = None
         variables = [mn_cu_freq, mid_cu_freq, mx_cu_freq, lower_bound, upper_bound] # values to be inputted for interpolation
         variables_names = ["mn_cu_freq", "mid_cu_freq", "mx_cu_freq", "lower_bound", "upper_bound"]
-        for index, _ in enumerate(variables): 
+        for index in range(len(variables)): 
             variables[index] = float(input("Enter {}: ".format(variables_names[index])))
         print("x = ", interpolation(variables))
 
@@ -283,7 +283,7 @@ def statistics(): # checks for what you want
         Freq_Dens_2 = Frequency_2/Class_Width_2
         Width_2 = (Class_Width_2*Width_1)/Class_Width_1
         Height_2 = (Freq_Dens_2*Height_1)/Freq_Dens_1
-        print("Other Width = " + str(Width_2), "Other Height = " + str(Height_2), sep="\n")
+        print("", "Other Width = " + str(Width_2), "Other Height = " + str(Height_2), sep="\n")
 
         
 statistics()
