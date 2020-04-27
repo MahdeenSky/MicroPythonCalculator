@@ -89,7 +89,7 @@ def listed_data_stats(listed_data): # for dealing with listed data Ex: 1,2,3,4 o
     # mode
     mode = find_mode(sorted_listed_data)
 
-    return [sum_listed_data, sum_squared_listed_data, number_of_data, round(mean, 5), median, mode, round(variance, 5), round(standard_deviation, 5), lower_quartile, upper_quartile, IQR, Range, round(lower_outlier_bound, 5), round(upper_outlier_bound, 5), skewness, round(skewness_quantity, 5), minimum, maximum]
+    return [sum_listed_data, sum_squared_listed_data, number_of_data, round(mean, 5), median, mode, round(variance, 5), round(standard_deviation, 5), lower_quartile, upper_quartile, IQR, Range, round(lower_outlier_bound, 5), round(upper_outlier_bound, 5), skewness, round(skewness_quantity, 5), minimum, maximum, sorted_listed_data]
 
 
 def continuous_grouped_data_stats(grouped_data): # for dealing with grouped data ex: [[lower bound, upper bound, frequency], [...], [...]] etc. in [[0, 10, 16], [10, 15, 18], [15, 20, 50]] in the first list, 0 and 10 represents the interval 0 -> 10, and 16 is the frequency of numbers in this range
@@ -219,7 +219,7 @@ def statistics(): # checks for what you want
     choice = input("a for Interpolation\nb for Listed Data\nc for Continuous Data\nd for Discrete Data\ne for Histogram\n: ")
 
 
-    if choice == "a": # interpolation
+    if choice == "a": # linear interpolation
         mn_cu_freq = mid_cu_freq = mx_cu_freq = lower_bound = upper_bound = None
         variables = [mn_cu_freq, mid_cu_freq, mx_cu_freq, lower_bound, upper_bound] # values to be inputted for interpolation
         variables_names = ["mn_cu_freq", "mid_cu_freq", "mx_cu_freq", "lower_bound", "upper_bound"]
@@ -237,7 +237,7 @@ def statistics(): # checks for what you want
             value = float(value)
             listed_data.append(value)
         results = [str(value) for value in listed_data_stats(listed_data)] # for concatonation
-        print("","Minimum = " + results[16], "Maximum = " + results[17], "Sum_x = " + results[0], "Sum_x^2 = " + results[1], "n = " + results[2], "Mean = " + results[3], "Mode = " + results[5],
+        print("", results[18], "Minimum = " + results[16], "Maximum = " + results[17], "Sum_x = " + results[0], "Sum_x^2 = " + results[1], "n = " + results[2], "Mean = " + results[3], "Mode = " + results[5],
         "Lower Quartile = " + results[8], "Median = " + results[4], "Upper Quartile = " + results[9], "IQR = " + results[10],
          "Range = " + results[11], "Variance = " + results[6], "Standard_Deviation = " + results[7], "Lower outlier = " + results[12],
          "Upper outlier = " + results[13], "Skewness is " + results[14], "Skewness count = " + results[15], sep="\n")
@@ -285,5 +285,6 @@ def statistics(): # checks for what you want
         Height_2 = (Freq_Dens_2*Height_1)/Freq_Dens_1
         print("", "Other Width = " + str(Width_2), "Other Height = " + str(Height_2), sep="\n")
 
+    
         
 statistics()

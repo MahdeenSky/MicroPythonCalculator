@@ -52,3 +52,4 @@ Gives a wide range of output, which include:
 15) measure of skewness
 16) skewness (positive, negative, symmetrical)
 17) middle values for each class in continuous
+18) Sorted Listed Data from smallest to greatest
