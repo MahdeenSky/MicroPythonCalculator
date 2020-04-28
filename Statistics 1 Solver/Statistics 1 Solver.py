@@ -224,7 +224,7 @@ def statistics(): # checks for what you want
         variables = [mn_cu_freq, mid_cu_freq, mx_cu_freq, lower_bound, upper_bound] # values to be inputted for interpolation
         variables_names = ["mn_cu_freq", "mid_cu_freq", "mx_cu_freq", "lower_bound", "upper_bound"]
         for index in range(len(variables)): 
-            variables[index] = float(input("Enter {}: ".format(variables_names[index])))
+            variables[index] = float(input("{}: ".format(variables_names[index])))
         print("x = ", interpolation(variables))
 
 
