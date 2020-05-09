@@ -23,6 +23,7 @@ start bound: 0
 end bound: 10 - - - keeps looping
 frequency: 18
 To stop entering values at any time, enter 'x' when it's start bound.
+- Dont worry, it takes care of gaps in data by itself!
 
 Discrete Grouped Data Stats asks for as much data too:
 Value: 1
@@ -53,3 +54,4 @@ Gives a wide range of output, which include:
 16) skewness (positive, negative, symmetrical)
 17) middle values for each class in continuous
 18) Sorted Listed Data from smallest to greatest
+19) all the cumulative frequencies for each interval consecutively
