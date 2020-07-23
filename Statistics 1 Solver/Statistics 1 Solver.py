@@ -6,10 +6,17 @@ def find_median(lst): # finds the median of a sorted_list
 
 
 def find_mode(listed_data): # finds the mode for listed data
-    Counter = {value: listed_data.count(value) for value in listed_data}
-    m = max(Counter.values())
-    mode = [x for x in set(listed_data) if Counter[x] == m] if m>1 else None
-    return mode
+    counter = dict()
+    for value in listed_data:
+        if value not in counter:
+            counter[value] = 0
+        counter[value] += 1
+
+    m = max(counter.values())
+    if m <= 1:
+        return None
+
+    return [x for x, occurance in counter.items() if occurance == m]
 
 
 def interpolation_grouped_data(grouped_data, cumulative_frequencies, position): # responsible for using linear interpolation to find the lower quartile, median, and upper quartile of grouped data
@@ -256,6 +263,7 @@ def check_type(x):
             return str([int(x[i]) if x[i] % 1 == 0 else x[i] for i in range(len(x))])
     return str(x)
 
+
 def print_stats(results_names, results):
     print("", *(results_names[i] + " = " + check_type(results[i]) for i in range(len(results_names))), sep='\n')
 
@@ -266,6 +274,7 @@ def linear_interpolation(): # a
     for index in range(5): 
         variables[index] = float(input("{}: ".format(variables_names[index])))
     print("x = ", interpolation(*variables))
+
 
 def listed_data_statistics(): # b
     listed_data = [] 
@@ -279,6 +288,7 @@ def listed_data_statistics(): # b
                      'Median', 'Upper Quartile', 'IQR', 'Range', 'Variance', 'Standard Deviation',
                      'Lower Outlier', 'Upper Outlier', 'Skewness', 'Skewness Value')
     print_stats(results_names, results)
+
 
 def continuous_grouped_data_statistics(): # c
     grouped_data = []
@@ -295,6 +305,7 @@ def continuous_grouped_data_statistics(): # c
                      'Lower Outlier', 'Upper Outlier', 'Skewness', 'Skewness Value')
     print_stats(results_names, results)
 
+
 def discrete_grouped_data_statistics(): # d
     grouped_data = []
     while True:
@@ -310,6 +321,7 @@ def discrete_grouped_data_statistics(): # d
                      'Sum_y^2', 'Sum_xy', 'Mean_x', 'Mean_y', 'Sxx', 'Syy', 'Sxy', 'b', 'a', 'Reg. Eq', 'Prod. Momen. Coeff')
     print_stats(results_names, results)
 
+
 def coded_data_discrete_output(grouped_data, prompt_index):
     prompts = ["-- With Coding --", '-- Without Coding --']
     print(prompts[prompt_index])
@@ -319,6 +331,7 @@ def coded_data_discrete_output(grouped_data, prompt_index):
                      'Lower Outlier', 'Upper Outlier', 'Skewness', 'Skewness Value', 'Sample_n', 'Sum_x', 'Sum_x^2', 'Sum_y',
                      'Sum_y^2', 'Sum_xy', 'Mean_x', 'Mean_y', 'Sxx', 'Syy', 'Sxy', 'b', 'a', 'Reg. Eq', 'Prod. Momen. Coeff')
     print_stats(results_names, results)
+
 
 def histogram_calculator(): # e
     names = ["Freq. 1 : ", "ClassWidth 1 : ", "Freq. 2 : ", "ClassWidth 2 : ", "Height 1 : ", "Width 1 : "]
@@ -330,7 +343,11 @@ def histogram_calculator(): # e
     Height_2 = (Freq_Dens_2*Height_1)/Freq_Dens_1
     print("", "Other Width = " + str(Width_2), "Other Height = " + str(Height_2), sep="\n")
 
+
 def code_data(): # f 
+    """
+    given x and y data, it codes various operations on the data, and returns the coded data, and potentially it's statistics.
+    """
     # codes x and y data
     x_lst = []
     y_lst = []
@@ -400,14 +417,137 @@ def code_data(): # f
         print("\n")
         coded_data_discrete_output(original_data, 1)
 
+
+def normal_distribution():
+    """
+    Acquires a, given x [and y], for a standard Normal Distribution of mean 0, and standard deviation 1
+    1) P(Z < x) = a
+    2) P(Z > x) = a
+    3) P(x < Z < y) = a
+    4) P(Z < a) = x
+    5) P(Z > a) = x
+    6) P(-a < x < a) = x
+    """
+    from math import sqrt, exp
+    mean = 0
+    standard_dev = 1
+    percentage_points = {0.5000: 0.0000, 0.4000: 0.2533, 0.3000: 0.5244, 0.2000: 0.8416, 0.1000: 1.2816, 0.0500: 1.6440, 0.0250: 1.9600, 0.0100: 2.3263, 0.0050: 2.5758, 0.0010: 3.0902, 0.0005: 3.2905}
+
+    def erf(x):
+        """
+        python implementation of math.erf() as it is not available in micropython
+        """
+        # save the sign of x
+        sign = 1 if x >= 0 else -1
+        x = abs(x)
+
+        # constants
+        a1 =  0.254829592
+        a2 = -0.284496736
+        a3 =  1.421413741
+        a4 = -1.453152027
+        a5 =  1.061405429
+        p  =  0.3275911
+
+        # A&S formula 7.1.26
+        t = 1.0/(1.0 + p*x)
+        y = 1.0 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*exp(-x*x)
+        return sign*y # erf(-x) = -erf(x)
+
+    def get_z_less_than(x=None, digits=4):
+        """
+        P(Z < x) = a
+        """
+        if x is None:
+            x = float(input("Enter x: "))
+
+        res = 0.5 * (1 + erf((x - mean) / sqrt(2 * standard_dev ** 2)))
+        return round(res, digits)
+
+    def get_z_greater_than(x=None):
+        """
+        P(Z > x) = a
+        """
+        if x is None:
+            x = float(input("Enter x: "))
+
+        return round(1 - get_z_less_than(x), 4)
+
+    def get_z_in_range(lower_bound=None, upper_bound=None):
+        """
+        P(lower_bound < Z < upper_bound) = 
+        """
+        if lower_bound is None and upper_bound is None:
+            lower_bound = float(input("Enter lower_bound: "))
+            upper_bound = float(input("Enter upper_bound: "))
+
+        return round(get_z_less_than(upper_bound) - get_z_less_than(lower_bound), 4)
+
+    def get_z_less_than_a_equal(x=None, digits=4, round_=2):
+        """
+        P(Z < a) = x
+        """
+        if x is None:
+            x = float(input("Enter x: "))
+
+        if x <= 0.0 or x >= 1.0:
+            raise ValueError("x must be >0.0 and <1.0")
+        min_res, max_res = -10, 10
+        while max_res - min_res > 10 ** -(digits * 2):
+            mid = (max_res + min_res) / 2
+            if get_z_less_than(mid, digits*2) < x:
+                min_res = mid
+            else:
+                max_res = mid
+        return round((max_res + min_res) / 2, round_)
+
+    def get_z_greater_than_a_equal(x=None):
+        """
+        P(Z > a) = x
+        """
+        if x is None:
+            x = float(input("Enter x: "))
+
+        if x in percentage_points:
+            return percentage_points[x]
+        else:
+            return get_z_less_than_a_equal(1-x)
+
+    def get_z_in_range_a_b_equal(x=None):
+        """
+        P(-a < Z < a) = x
+        acquires a
+        """
+        if x is None:
+            x = float(input("Enter x: "))
+                    
+        return get_z_less_than_a_equal(0.5 + x/2, 4, 4)
+
+    norm_choices = {'1': get_z_less_than, 
+                    '2': get_z_greater_than, 
+                    '3': get_z_in_range, 
+                    '4': get_z_less_than_a_equal, 
+                    '5': get_z_greater_than_a_equal, 
+                    '6': get_z_in_range_a_b_equal}
+
+    option = input("1: P(Z < x) = a\n2: P(Z > x) = a\n3: P(-x < Z < x) = a\n4: P(Z < a) = x\n5: P(Z > a) = x\n6: P(-a < Z < a) = x\n: ")
+
+    # if not a valid option, then do nothing and naturally exit    
+    print(norm_choices.get(option, lambda: None)())
+    again = input("Try again? 1 = Yes\n: ")
+    if again == '1':
+        normal_distribution()
+
+
 def statistics(): # checks for what you want
-    choices = {'a': linear_interpolation, 
-               'b': listed_data_statistics, 
-               'c': continuous_grouped_data_statistics, 
-               'd': discrete_grouped_data_statistics,
-               'e': histogram_calculator,
-               'f': code_data}
-    choice = input("a for Interpolation\nb for Listed Data\nc for Continuous Data\nd for Discrete Data\ne for Histogram\nf for code data\n: ")
+    choices = {'1': linear_interpolation, 
+               '2': listed_data_statistics, 
+               '3': continuous_grouped_data_statistics, 
+               '4': discrete_grouped_data_statistics,
+               '5': histogram_calculator,
+               '6': code_data,
+               '7': normal_distribution}
+    choice = input("1: Interpolation\n2: Listed Data\n3: Continuous Data\n4: Discrete Data\n5: Histogram\n6: Code Data\n7: Norm_Dist : ")
     choices.get(choice, lambda: None)()
 
 
