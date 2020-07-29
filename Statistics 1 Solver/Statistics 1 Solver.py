@@ -431,7 +431,7 @@ def normal_distribution():
     from math import sqrt, exp
     mean = 0
     standard_dev = 1
-    percentage_points = {0.5000: 0.0000, 0.4000: 0.2533, 0.3000: 0.5244, 0.2000: 0.8416, 0.1000: 1.2816, 0.0500: 1.6440, 0.0250: 1.9600, 0.0100: 2.3263, 0.0050: 2.5758, 0.0010: 3.0902, 0.0005: 3.2905}
+    percentage_points = {0.5000: 0.0000, 0.4000: 0.2533, 0.3000: 0.5244, 0.2000: 0.8416, 0.1500: 1.0364, 0.1000: 1.2816, 0.0500: 1.6449, 0.0250: 1.9600, 0.0100: 2.3263, 0.0050: 2.5758, 0.0010: 3.0902, 0.0005: 3.2905}
 
     def erf(x):
         """
@@ -511,7 +511,7 @@ def normal_distribution():
         if x in percentage_points:
             return percentage_points[x]
         else:
-            return get_z_less_than_a_equal(1-x)
+            return get_z_less_than_a_equal(1-x, 4, 4)
 
     def get_z_in_range_a_b_equal(x=None):
         """
