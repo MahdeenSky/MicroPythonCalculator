@@ -164,7 +164,7 @@ def solve_quadratic_equation(a, b, c):
         return ( (-b+sqrt(get_determinant(a, b, c))) / (2*a), (-b-sqrt(get_determinant(a, b, c))) / (2*a)) # (x1, x2)
     # no solutions
     else:
-        return None
+        return None, None
 
 
 def factor_quadratic_equation(a, b, c):
@@ -180,58 +180,60 @@ def factor_quadratic_equation(a, b, c):
     flip_sign_if_negative = lambda x, sign: -x if sign == '-' else x # switch the signs for formatting if sign == '-'
     float_to_int = lambda x: int(x) if is_integer(x) else x # only if the float is actually an integer like 3.0
 
-    if get_determinant(a, b, c) >= 0:
+    if a < 0:
+        a, b, c = a/-1, b/-1, c/-1
 
-        if c == 0: # factor by gcf 6x^2 - 2x
-            gcf = gcd(a, b)
-            a, b = a/gcf, b/gcf
-            gcf = "" if gcf == 1 else gcf
+    if c == 0: # factor by gcf 6x^2 - 2x
+        gcf = gcd(a, b)
+        a, b = a/gcf, b/gcf
+        gcf = "" if gcf == 1 else gcf
 
-            sign = get_sign(b)
-            b = flip_sign_if_negative(b, sign)
+        sign = get_sign(b)
+        b = flip_sign_if_negative(b, sign)
 
-            return "{}x({}x{}{})".format(float_to_int(gcf), fraction(a), sign, fraction(b))
- 
-        else: 
-            denom = 2*a
-            x1, x2 = solve_quadratic_equation(a, b, c)
+        return "{}x({}x{}{})".format(float_to_int(gcf), fraction(a), sign, fraction(b))
+
+    else: 
+        denom = 2*a
+        x1, x2 = solve_quadratic_equation(a, b, c)
+        if x1 and x2:
             x1_numer, x2_numer = x1*denom, x2*denom
+        else:
+            x1_numer = x2_numer = None
 
-            if not (is_integer(x1_numer) and is_integer(x2_numer)) or not is_integer(denom): 
-            # factor by completing the square 2(x+3) + 1
-            # (x+p)^2 + q
-                global completing_the_square
-                completing_the_square = True
+        if (not x1 and not x2) or not (is_integer(x1_numer) and is_integer(x2_numer)) or not is_integer(denom): 
+        # factor by completing the square 2(x+3) + 1
+        # (x+p)^2 + q
+            global completing_the_square
+            completing_the_square = True
 
-                if a != 1:
-                    a, b, c = a/a, b/a, c/a
+            if a != 1:
+                a, b, c = a/a, b/a, c/a
 
-                p = b/(2*a)
-                q = c - (b**2)/(4*a)
+            p = b/(2*a)
+            q = c - (b**2)/(4*a)
 
-                sign1 = get_sign(p)
-                sign2 = get_sign(q)
-                p = flip_sign_if_negative(p, sign1)
-                q = flip_sign_if_negative(q, sign2)
+            sign1 = get_sign(p)
+            sign2 = get_sign(q)
+            p = flip_sign_if_negative(p, sign1)
+            q = flip_sign_if_negative(q, sign2)
 
-                return "(x{}{})^2 {} {}".format(sign1, fraction(p), sign2, fraction(q))
+            return "(x{}{})^2 {} {}".format(sign1, fraction(p), sign2, fraction(q))
 
-            else: 
-            # normal factoring (x+3)(x+3)
-                x1_gcd, x2_gcd = gcd(x1_numer, denom), gcd(x2_numer, denom)
-                x1_numer, x2_numer = -x1_numer/x1_gcd, -x2_numer/x2_gcd
-                x1_denom, x2_denom = denom/x1_gcd, denom/x2_gcd
-                gcf = gcd(a, b, c)*a/abs(a)
+        else: 
+        # normal factoring (x+3)(x+3)
+            x1_gcd, x2_gcd = gcd(x1_numer, denom), gcd(x2_numer, denom)
+            x1_numer, x2_numer = -x1_numer/x1_gcd, -x2_numer/x2_gcd
+            x1_denom, x2_denom = denom/x1_gcd, denom/x2_gcd
+            gcf = gcd(a, b, c)*a/abs(a)
 
-                sign1 = get_sign(x1_numer)
-                sign2 = get_sign(x2_numer)
-                x1_numer = flip_sign_if_negative(x1_numer, sign1)
-                x2_numer = flip_sign_if_negative(x2_numer, sign2)
+            sign1 = get_sign(x1_numer)
+            sign2 = get_sign(x2_numer)
+            x1_numer = flip_sign_if_negative(x1_numer, sign1)
+            x2_numer = flip_sign_if_negative(x2_numer, sign2)
 
-                return "{}({}x{}{})({}x{}{})".format(float_to_int(gcf) if gcf != 1 else "", fraction(x1_denom), sign1, fraction(x1_numer), fraction(x2_denom), sign2, fraction(x2_numer))
+            return "{}({}x{}{})({}x{}{})".format(float_to_int(gcf) if gcf != 1 else "", fraction(x1_denom) if x1_denom != 1 else "", sign1, fraction(x1_numer), fraction(x2_denom) if x2_denom != 1 else "", sign2, fraction(x2_numer))
 
-    else: # no factored form
-        return None 
 
 
 while True:
@@ -244,7 +246,7 @@ while True:
 
     print(factored_form) if factored_form else print("No Factored Form")
 
-    if solutions:
+    if solutions[0]:
         if completing_the_square:
             solution0_fraction, solution1_fraction \
                 = format_complete_the_square_solutions(*solve_completing_the_square(a, b, c))
