@@ -368,7 +368,8 @@ def code_data(): # f
     choices = {'+': lambda n1, n2: n1+n2,
             '-': lambda n1, n2: n1-n2,
             '*': lambda n1, n2: n1*n2,
-            '/': lambda n1, n2: n1/n2}
+            '/': lambda n1, n2: n1/n2,
+            '^': lambda n1, n2: n1**n2}
 
 
     prompts = ["Enter Operation: ", "Enter Value: "]
@@ -475,7 +476,7 @@ def normal_distribution():
 
     def get_z_in_range(lower_bound=None, upper_bound=None):
         """
-        P(lower_bound < Z < upper_bound) = 
+        P(lower_bound < Z < upper_bound) = a
         """
         if lower_bound is None and upper_bound is None:
             lower_bound = float(input("Enter lower_bound: "))
