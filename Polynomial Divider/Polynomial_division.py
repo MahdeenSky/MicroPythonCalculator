@@ -31,10 +31,11 @@ def expression(terms):
     power = 1
     for term in terms[-2::-1]:
         if term != 0:
+            term = conv_int(term) if term != -1 else '-'
             if power != 1:
-                expression.append("{}x^{}".format(conv_int(term), power))
+                expression.append("{}x^{}".format(term, power))
             else:
-                expression.append("{}x".format(conv_int(term)))
+                expression.append("{}x".format(term))
         power += 1
     return expression[::-1]
 
@@ -80,7 +81,7 @@ def extended_synthetic_division(dividend, divisor):
     return map_integer(out[:separator]), map_integer(out[separator:]) # return quotient, remainder.
 
 
-print("Polynomial Synthetic Divison")
+print("Polynomial Synthetic Division")
 
 dividend = get_terms("Dividend Terms: - - -")
 divisor = get_terms("Divisor Terms: - - -")
