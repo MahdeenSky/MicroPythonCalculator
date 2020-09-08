@@ -10,28 +10,33 @@ Use:
 	polynomial to be divided.
 
 Output:
-	+ a list of values like [1, 6, 9] represents x^2 + 6x + 9 
+	+ a list of values like [1, 6, 9] represents x^2 + 6x + 9
 	  in order of descending x powers
 	+ the number of remainders
 
 Example:
 ~ Parts insider # # are not part of the code ~
-	Enter term 1: 1
-	Enter term 2: 6
-	Enter term 3: 9
-	Enter term 4: x 
-	# means x^2 + 6x + 9 #
-	[1, 6, 9]
-	(ax + b)
-	Enter a: 1
-	Enter b: 3 
-	# means divide by (x + 3) #
-	
-	-Output-
-	['1', '6', '9'] / [1, 3] =
-	# means (x^2 + 6x + 9)/(x + 3) #
-	[1.0, 3.0] remainder [0.0] 
-	# means (x+3) is the quotient #
+Polynomial Synthetic Divison
+
+ Dividend Terms: - - -
+Term 1: 3
+Term 2: 0
+Term 3: 4
+Term 4: 11
+Term 5: x
+['3x^3', '4x', 11]
+
+ Divisor Terms: - - -
+Term 1: 1
+Term 2: -3
+Term 3: 2
+Term 4: x
+['1x^2', '-3x', 2]
+
+Quotient:
+['3x', 9]
+Remainder:
+['25x', -7]
 
 The Program is not designed to be foolproof so please give it the values it requires.
 if you have any fix for my code find me on reddit @MahdeenSky
