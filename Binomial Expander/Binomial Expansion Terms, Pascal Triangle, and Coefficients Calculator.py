@@ -98,7 +98,7 @@ while True:
         
         else:
             print("unknown letter\n please try again!")
-             
+
         stopper()
         choice = 'x'
    
