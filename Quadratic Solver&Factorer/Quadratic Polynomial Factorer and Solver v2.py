@@ -270,7 +270,8 @@ def factor_quadratic_equation(a, b, c):
     """
     get_sign = lambda x: "+" if x > 0 else "-" # set the sign based on x's value
     float_to_int = lambda x: int(x) if is_integer(x) else x # only if the float is actually an integer like 3.0
-    
+
+    orig_a, orig_b, orig_c = a, b, c
     if a == 0: # Linear equation 2x+6
         gcf = gcd(b, c)
         b, c = b/gcf, c/gcf
@@ -311,9 +312,8 @@ def factor_quadratic_equation(a, b, c):
 
             p = b/(2*a)
             q = c - (b**2)/(4*a)
-
-            return "(x{}{})^2 {} {}".format(get_sign(p), fraction(abs(p)), \
-                    get_sign(q), fraction(abs(q))), True
+            return "(x{}{})^2 {} {}\nvertex: ({}, {})".format(get_sign(p), fraction(abs(p)), \
+                    get_sign(q), fraction(abs(q)), fraction(-orig_b/(2*orig_a)), fraction(orig_c-((orig_b**2)/(4*orig_a)))), True
 
         else: 
         # normal factoring a(x+b)(x+c)
